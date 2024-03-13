@@ -14,10 +14,9 @@ def create_app():
     TEMPLATE_FOLDER = os.path.join(APP_DIR, 'build/templates')
     app = Flask(__name__, static_folder=None, template_folder=None, instance_relative_config=False)
     app.config.from_object('config.Config')
-    
 
     with app.app_context():
         app.register_blueprint(homepage_bp, url_prefix='')
         app.register_blueprint(signin_bp, url_prefix='/user')
-    
+
     return app
