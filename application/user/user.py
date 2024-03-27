@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, render_template, Blueprint
 from application.models import User
+from application.db import add_user
 
 signin_bp = Blueprint('signin_bp', __name__,template_folder='templates', static_folder='static')
 
