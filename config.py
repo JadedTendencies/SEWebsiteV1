@@ -15,7 +15,7 @@ class Config:
     ENVIRONMENT = os.environ.get("ENVIRONMENT")
     FLASK_APP = os.environ.get("FLASK_APP")
     FLASK_DEBUG = True
-    SECRET_KEY = os.environ.get("SECRET_KEY")
+    SECRET_KEY = 'dev' #os.environ.get("SECRET_KEY")
 
 
     # Database

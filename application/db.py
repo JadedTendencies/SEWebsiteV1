@@ -37,3 +37,11 @@ class Add_User:
         }
         db.UserInfoTest.insert_one(user)
         return 200
+
+def authenticate_login(email, id=None):
+    if not (email == None):
+        user = db.UserInforTest.find_one({"_id" : id})
+        return user
+    else:
+        user = db.UserInfoTest.find_one({"Email":email})
+        return user
