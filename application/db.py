@@ -1,6 +1,6 @@
 import bson
 
-from flask import current_app, g
+from flask import current_app, g, jsonify
 from werkzeug.local import LocalProxy
 from flask_pymongo import PyMongo
 
@@ -8,6 +8,7 @@ from pymongo.errors import DuplicateKeyError, OperationFailure
 from bson.objectid import ObjectId
 from bson.errors import InvalidId
 
+# DB SETUP
 
 def get_db():
     """
@@ -22,8 +23,17 @@ def get_db():
     return db
 
 
-# Use LocalProxy to read the global db instance with just `db`
 db = LocalProxy(get_db)
 
-def add_user(first_name, last_name, email, password):
-    return None
+# MODELS
+
+class Add_User:
+    def signup(self, first_name, last_name, email, password):
+        user = {
+            "First Name": f"{first_name}",
+            "Last Name": f"{last_name}",
+            "Email": f"{email}",
+            "Password": f"{password}"
+        }
+        db.UserInfoTest.insert_one(user)
+        return 200

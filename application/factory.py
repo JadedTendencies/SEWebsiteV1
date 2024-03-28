@@ -12,6 +12,9 @@ def create_app():
     APP_DIR = os.path.abspath(os.path.dirname(__file__))
     STATIC_FOLDER = os.path.join(APP_DIR, 'build/static')
     TEMPLATE_FOLDER = os.path.join(APP_DIR, 'build/templates')
+# Currently the above directories are not in use, if we move homepage views into the app factory we will need to add
+# template and static folders for the factory
+
     app = Flask(__name__, static_folder=None, template_folder=None, instance_relative_config=False)
     app.config.from_object('config.Config')
 
