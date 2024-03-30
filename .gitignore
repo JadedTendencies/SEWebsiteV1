@@ -6,3 +6,4 @@ application/homepage/__pycache__
 application/user/__pycache__
 *.pyc
 venv
+.DS_Store
