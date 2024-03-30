@@ -1,55 +1,62 @@
-from flask import Flask, url_for, render_template, Blueprint, request, g, redirect, flash, session
+from flask import Blueprint, render_template, request, redirect, url_for, flash, g
 from flask_login import login_user, logout_user, login_required, current_user
-from application.db import Add_User, authenticate_login
+from application.db import authenticate_login, Add_User
 
-signin_bp = Blueprint('signin_bp', __name__,template_folder='templates', static_folder='static')
+signin_bp = Blueprint('signin_bp', __name__, template_folder='templates', static_folder='static')
 
-
-@signin_bp.route('/info', methods=['POST','GET'])
+# Route for user information (Assuming it's for logged-in users)
+@signin_bp.route('/info', methods=['POST', 'GET'])
+@login_required
 def info():
-    if request.method == 'POST':
-        new_user = Add_User().signup(request.form['first-name'], request.form['last-name'],request.form['email'],request.form['password'])
-    return redirect('/')
+    # Example content, adjust according to your application's context
+    return render_template('user_info.html', user=current_user)
 
-
-
-@signin_bp.route('/', methods=['POST','GET'])
-def test():
-    return render_template('signup.html')
-
-@signin_bp.route('/signup', methods=['POST','GET'])
+# User registration
+@signin_bp.route('/signup', methods=['POST', 'GET'])
 def signup():
+    if request.method == 'POST':
+        first_name = request.form['first-name']
+        last_name = request.form['last-name']
+        email = request.form['email']
+        password = request.form['password']  # Remember, no password hashing yet
+       
+        print("Received signup form data:", first_name, last_name, email, password)  # Print form data
+
+        new_user = Add_User().signup(first_name, last_name, email, password)
+       
+        print("New user ID:", new_user)  # Print the new user's ID
+
+        if new_user:
+            # Auto login after register or redirect to login page
+            return redirect(url_for('signin_bp.login'))
+        else:
+            flash("Signup failed, please try again.")
+
     return render_template('signup.html')
 
-@signin_bp.route('/login', methods = ['GET','POST'])
+# Login route
+@signin_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form['email']
-        password = request.form['password']
-        error = None
-        user = authenticate_login(email)
+        password = request.form['password']  # Again, assuming plaintext for now
+        user = authenticate_login(email=email)
 
-        if user is None:
-            error = 'Incorrect username.'
-        elif not user['Password'] == password:
-            error = 'Incorrect password.'
-
-        if error is None:
-            session.clear()
-            session['user_id'] = str(user['_id'])
-            session['first_name'] = user['First Name']
-            return redirect(url_for('signup'))
-
-        flash(error)
-
+        if user and user.password == password:
+            login_user(user)
+            return redirect(url_for('signin_bp.info'))  # Redirecting to the info page as an example
+        else:
+            flash('Invalid username or password')
 
     return render_template('login.html')
 
+# Logout route
+@signin_bp.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('homepage_bp.index'))  # Make sure to adjust this to your homepage route
+
+# Load logged-in user's information
 @signin_bp.before_app_request
 def load_logged_in_user():
-    user_id = session.get('user_id')
-
-    if user_id is None:
-        g.user = None
-    else:
-        g.user = authenticate_login(None, id=user_id)
+    g.user = current_user if current_user.is_authenticated else None
