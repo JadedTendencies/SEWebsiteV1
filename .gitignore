@@ -1,8 +1,8 @@
 .venv
 .env
 __pycache__/
-application/__pycache__/
-application/homepage/__pycache__/
-application/user/__pycache__/
+application/__pycache__
+application/homepage/__pycache__
+application/user/__pycache__
 *.pyc
 venv
