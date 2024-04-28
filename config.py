@@ -19,6 +19,15 @@ class Config:
 
 
     # Database
-    MONGO_URI = "mongodb+srv://jadetest:mongodbpassword@cluster0.mqvloxu.mongodb.net/database1" #os.environ.get('MongoDB_DATABASE_URI')
+    MONGO_URI = "mongodb+srv://jojoevange:zufftnibfi2003@soundethicsuser.t42jysw.mongodb.net/UserTest" 
+    
+    '''
+    Other ways to connect to MongoDB
+
+    James' URI: "mongodb+srv://jadetest:mongodbpassword@cluster0.mqvloxu.mongodb.net/database1"
+
+    Through .env file: os.environ.get('MongoDB_DATABASE_URI')
+    '''
+
 
 

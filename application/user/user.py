@@ -55,8 +55,3 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('homepage_bp.index'))  # Make sure to adjust this to your homepage route
-
-# Load logged-in user's information
-@signin_bp.before_app_request
-def load_logged_in_user():
-    g.user = current_user if current_user.is_authenticated else None
